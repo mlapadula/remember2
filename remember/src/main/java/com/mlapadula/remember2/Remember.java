@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -193,6 +194,25 @@ public class Remember {
      */
     public Set<String> keys() {
         return mData.keySet();
+    }
+
+    /**
+     * Queries for entries that match the given predicate, returning the corresponding keys.
+     * This is an O(n) operation on the contained map.
+     *
+     * @param predicate the predicate to apply to values
+     * @return the {@link Set} of keys for the matching entries
+     */
+    public Set<String> query(Predicate predicate) {
+        Set<String> matches = new HashSet<>();
+        Set<String> keys = keys();
+        for (String key : keys) {
+            Object value = mData.get(key);
+            if (value != null && predicate.match(value)) {
+                matches.add(key);
+            }
+        }
+        return matches;
     }
 
     /**
@@ -413,6 +433,13 @@ public class Remember {
             castedObject = clazz.cast(value);
         }
         return castedObject;
+    }
+
+    /**
+     * Predicate for querying
+     */
+    public interface Predicate {
+        boolean match(Object obj);
     }
 
     /**
