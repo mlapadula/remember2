@@ -7,6 +7,10 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
 import java.util.Set;
@@ -318,6 +322,13 @@ public class Remember {
         return saveAsync(key, value, null);
     }
 
+    public Remember putJsonObject(String key, JSONObject value) {
+        return putJsonObject(key, value, null);
+    }
+
+    public Remember putJsonArray(String key, JSONArray value) {
+        return putJsonArray(key, value, null);
+    }
     /**
      * Put a float. This saves to memory immediately and saves to disk asynchronously.
      *
@@ -368,6 +379,16 @@ public class Remember {
         return saveAsync(key, value, callback);
     }
 
+    public Remember putJsonObject(String key, JSONObject value, final Callback callback) {
+        String jsonString = value == null ? "" : value.toString();
+        return putString(key, jsonString, callback);
+    }
+
+    public Remember putJsonArray(String key, JSONArray value, final Callback callback) {
+        String jsonString = value == null ? "" : value.toString();
+        return putString(key, jsonString, callback);
+    }
+
     /**
      * Gets a float with the given key. Defers to the fallback value if the mapping didn't exist, wasn't a float,
      * or was null.
@@ -411,6 +432,30 @@ public class Remember {
     public boolean getBoolean(String key, boolean fallback) {
         Boolean value = get(key, Boolean.class);
         return value != null ? value : fallback;
+    }
+
+    public JSONObject getJsonObject(String key, JSONObject fallback) {
+        String jsonString = getString(key, null);
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                return new JSONObject(jsonString);
+            } catch (JSONException err) {
+                return fallback;
+            }
+        }
+        return fallback;
+    }
+
+    public JSONArray getJsonArray(String key, JSONArray fallback) {
+        String jsonString = getString(key, null);
+        if (!TextUtils.isEmpty(jsonString)) {
+            try {
+                return new JSONArray(jsonString);
+            } catch (JSONException err) {
+                return fallback;
+            }
+        }
+        return fallback;
     }
 
     /**
