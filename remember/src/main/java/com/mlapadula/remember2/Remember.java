@@ -458,8 +458,8 @@ public class Remember {
     }
 
     /**
-     * Gets a {@link JSONObject} with the given key. Defers to the fallback value if the mapping
-     * didn't exist, wasn't a boolean, or was null.
+     * Gets the value at the given key, parsed as a {@link JSONObject}. Defers to the fallback
+     * value if the mapping didn't exist or wasn't parseable as a {@link JSONObject}.
      */
     public JSONObject getJsonObject(String key, JSONObject fallback) {
         String jsonString = getString(key, null);
@@ -474,8 +474,8 @@ public class Remember {
     }
 
     /**
-     * Gets a {@link JSONArray} with the given key. Defers to the fallback value if the mapping
-     * didn't exist, wasn't a boolean, or was null.
+     * Gets the value at the given key, parsed as a {@link JSONArray}. Defers to the fallback
+     * value if the mapping didn't exist or wasn't parseable as a {@link JSONArray}.
      */
     public JSONArray getJsonArray(String key, JSONArray fallback) {
         String jsonString = getString(key, null);
