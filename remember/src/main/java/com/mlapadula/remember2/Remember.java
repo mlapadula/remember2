@@ -7,6 +7,7 @@ import android.os.SystemClock;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -30,6 +31,13 @@ import java.util.concurrent.ConcurrentMap;
 public class Remember {
 
     private static final String TAG = Remember.class.getSimpleName();
+
+    /**
+     * Cache of {@link Remember} instances. This ensures that we don't have more than one instance
+     * of Remember backed by the same shared prefs file.
+     */
+    private static final ConcurrentMap<String,WeakReference<Remember>> sCachedInstances =
+            new ConcurrentHashMap<>();
 
     /**
      * Lock to ensure that only one disk write happens at a time.
@@ -82,7 +90,20 @@ public class Remember {
                     "You must provide a valid context and shared prefs name when initializing Remember");
         }
 
-        return new Remember(context, sharedPrefsName);
+        // Use existing instance if we already have one for this file
+        WeakReference<Remember> cached = sCachedInstances.get(sharedPrefsName);
+        if (cached != null) {
+            Remember remember = cached.get();
+            if (remember != null) {
+                return remember;
+            }
+        }
+
+        // Else, create a new instance and cache it
+        Remember remember = new Remember(context, sharedPrefsName);
+        WeakReference<Remember> weakRef = new WeakReference<Remember>(remember);
+        sCachedInstances.put(sharedPrefsName, weakRef);
+        return remember;
     }
 
     /**
