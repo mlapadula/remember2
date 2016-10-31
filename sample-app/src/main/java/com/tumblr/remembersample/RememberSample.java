@@ -1,7 +1,7 @@
 package com.tumblr.remembersample;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -10,7 +10,7 @@ import com.tumblr.remember.Remember;
 /**
  * A simple activity that counts how many times it's been resumed via {@link Remember}.
  */
-public class RememberSample extends ActionBarActivity {
+public class RememberSample extends AppCompatActivity {
 
 	private static final String KEY = "test_key";
 
