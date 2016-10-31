@@ -1,4 +1,4 @@
-package com.mlapadula.remember;
+package com.mlapadula.remember2;
 
 import android.content.Context;
 import android.content.SharedPreferences;
