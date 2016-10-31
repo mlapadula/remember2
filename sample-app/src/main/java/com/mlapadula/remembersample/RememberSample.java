@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import com.tumblr.remember.Remember;
+import com.mlapadula.remember.Remember;
 
 /**
  * A simple activity that counts how many times it's been resumed via {@link Remember}.

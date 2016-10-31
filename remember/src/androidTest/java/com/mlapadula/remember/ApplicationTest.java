@@ -1,4 +1,4 @@
-package com.tumblr.remember;
+package com.mlapadula.remember;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
