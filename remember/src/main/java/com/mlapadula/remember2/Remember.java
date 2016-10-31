@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.lang.ref.WeakReference;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -174,6 +175,24 @@ public class Remember {
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return this;
+    }
+
+    public int size() {
+        return mData.size();
+    }
+
+    /**
+     * Returns a {@link Set} view of the keys contained. Note that since this Set is a view of
+     * the underlying ConcurrentMap, the Set will have similar concurrency semantics. Ie,
+     * The view's iterator is a "weakly consistent" iterator that will never throw
+     * ConcurrentModificationException, and guarantees to traverse elements as they existed upon
+     * construction of the iterator, and may (but is not guaranteed to) reflect any modifications
+     * subsequent to construction.
+     *
+     * @return a {@link Set} view of keys contained
+     */
+    public Set<String> keys() {
+        return mData.keySet();
     }
 
     /**
