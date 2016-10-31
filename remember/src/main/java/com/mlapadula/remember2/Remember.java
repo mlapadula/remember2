@@ -45,14 +45,14 @@ public class Remember {
     private final Object SHARED_PREFS_LOCK = new Object();
 
     /**
-     * The context to use.
-     */
-    private final Context mAppContext;
-
-    /**
      * The name of the shared preferences file to use.
      */
     private final String mSharedPrefsName;
+
+    /**
+     * The {@link SharedPreferences} instance
+     */
+    private SharedPreferences mSharedPreferences;
 
     /**
      * Our data. This is a write-through cache of the data we're storing in SharedPreferences.
@@ -64,13 +64,12 @@ public class Remember {
      */
     private Remember(Context context, String sharedPrefsName) {
         long start = SystemClock.uptimeMillis();
-        mAppContext = context.getApplicationContext();
         mSharedPrefsName = sharedPrefsName;
 
         // Read from shared prefs
-        SharedPreferences prefs = getSharedPreferences();
+        mSharedPreferences = context.getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE);
         mData = new ConcurrentHashMap<String, Object>();
-        mData.putAll(prefs.getAll());
+        mData.putAll(mSharedPreferences.getAll());
 
         long delta = SystemClock.uptimeMillis() - start;
         Log.i(TAG, "Remember took " + delta + " ms to init");
@@ -107,13 +106,6 @@ public class Remember {
     }
 
     /**
-     * Gets the shared preferences to use
-     */
-    private SharedPreferences getSharedPreferences() {
-        return mAppContext.getSharedPreferences(mSharedPrefsName, Context.MODE_PRIVATE);
-    }
-
-    /**
      * Saves the given (key,value) pair to disk.
      *
      * @return true if the save-to-disk operation succeeded
@@ -122,7 +114,7 @@ public class Remember {
         boolean success = false;
         synchronized (SHARED_PREFS_LOCK) {
             // Save it to disk
-            SharedPreferences.Editor editor = getSharedPreferences().edit();
+            SharedPreferences.Editor editor = mSharedPreferences.edit();
             boolean didPut = true;
             if (value instanceof Float) {
                 editor.putFloat(key, (Float) value);
@@ -203,7 +195,7 @@ public class Remember {
             @Override
             protected Boolean doInBackground(Void... params) {
                 synchronized (SHARED_PREFS_LOCK) {
-                    SharedPreferences.Editor editor = getSharedPreferences().edit();
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.clear();
                     return editor.commit();
                 }
@@ -237,7 +229,7 @@ public class Remember {
             @Override
             protected Boolean doInBackground(Void... params) {
                 synchronized (SHARED_PREFS_LOCK) {
-                    SharedPreferences.Editor editor = getSharedPreferences().edit();
+                    SharedPreferences.Editor editor = mSharedPreferences.edit();
                     editor.remove(key);
                     return editor.commit();
                 }

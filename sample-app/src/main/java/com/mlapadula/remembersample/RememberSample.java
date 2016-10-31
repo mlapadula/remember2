@@ -19,7 +19,7 @@ public class RememberSample extends AppCompatActivity {
 
     private static Remember sRemember;
 
-    private static synchronized Remember getRemember(Context context) {
+    private static Remember getRemember(Context context) {
         if (sRemember == null) {
             sRemember = Remember.create(context, PREFS_NAME);
         }
