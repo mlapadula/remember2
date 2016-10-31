@@ -1,4 +1,4 @@
-package com.tumblr.remembersample;
+package com.mlapadula.remembersample;
 
 import android.app.Application;
 import com.tumblr.remember.Remember;
