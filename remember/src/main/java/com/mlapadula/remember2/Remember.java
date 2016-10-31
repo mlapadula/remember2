@@ -182,6 +182,11 @@ public class Remember {
         return this;
     }
 
+    /**
+     * Gets the size of this collection.
+     *
+     * @return the size of this collection
+     */
     public int size() {
         return mData.size();
     }
@@ -322,10 +327,16 @@ public class Remember {
         return saveAsync(key, value, null);
     }
 
+    /**
+     * Put a {@link JSONObject}. This saves to memory immediately and saves to disk asynchronously.
+     */
     public Remember putJsonObject(String key, JSONObject value) {
         return putJsonObject(key, value, null);
     }
 
+    /**
+     * Put a {@link JSONArray}. This saves to memory immediately and saves to disk asynchronously.
+     */
     public Remember putJsonArray(String key, JSONArray value) {
         return putJsonArray(key, value, null);
     }
@@ -379,11 +390,23 @@ public class Remember {
         return saveAsync(key, value, callback);
     }
 
+    /**
+     * Put a {@link JSONObject}. This saves to memory immediately and saves to disk asynchronously.
+     *
+     * @param callback the callback to fire when done. The callback will be fired on the UI thread,
+     *                 and will be passed 'true' if successful, 'false' if not.
+     */
     public Remember putJsonObject(String key, JSONObject value, final Callback callback) {
         String jsonString = value == null ? "" : value.toString();
         return putString(key, jsonString, callback);
     }
 
+    /**
+     * Put a {@link JSONArray}. This saves to memory immediately and saves to disk asynchronously.
+     *
+     * @param callback the callback to fire when done. The callback will be fired on the UI thread,
+     *                 and will be passed 'true' if successful, 'false' if not.
+     */
     public Remember putJsonArray(String key, JSONArray value, final Callback callback) {
         String jsonString = value == null ? "" : value.toString();
         return putString(key, jsonString, callback);
@@ -434,6 +457,10 @@ public class Remember {
         return value != null ? value : fallback;
     }
 
+    /**
+     * Gets a {@link JSONObject} with the given key. Defers to the fallback value if the mapping
+     * didn't exist, wasn't a boolean, or was null.
+     */
     public JSONObject getJsonObject(String key, JSONObject fallback) {
         String jsonString = getString(key, null);
         if (!TextUtils.isEmpty(jsonString)) {
@@ -446,6 +473,10 @@ public class Remember {
         return fallback;
     }
 
+    /**
+     * Gets a {@link JSONArray} with the given key. Defers to the fallback value if the mapping
+     * didn't exist, wasn't a boolean, or was null.
+     */
     public JSONArray getJsonArray(String key, JSONArray fallback) {
         String jsonString = getString(key, null);
         if (!TextUtils.isEmpty(jsonString)) {
