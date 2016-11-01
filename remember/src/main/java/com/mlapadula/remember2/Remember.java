@@ -411,8 +411,8 @@ public class Remember {
     }
 
     /**
-     * Gets a float with the given key. Defers to the fallback value if the mapping didn't exist, wasn't a float,
-     * or was null.
+     * Gets a float with the given key. Defers to the fallback value if the mapping didn't exist,
+     * wasn't a float, or was null.
      */
     public float getFloat(String key, float fallback) {
         Float value = get(key, Float.class);
@@ -420,8 +420,8 @@ public class Remember {
     }
 
     /**
-     * Gets an int with the given key. Defers to the fallback value if the mapping didn't exist, wasn't an int,
-     * or was null.
+     * Gets an int with the given key. Defers to the fallback value if the mapping didn't exist,
+     * wasn't an int, or was null.
      */
     public int getInt(String key, int fallback) {
         Integer value = get(key, Integer.class);
@@ -429,8 +429,8 @@ public class Remember {
     }
 
     /**
-     * Gets a long with the given key. Defers to the fallback value if the mapping didn't exist, wasn't a long,
-     * or was null.
+     * Gets a long with the given key. Defers to the fallback value if the mapping didn't exist,
+     * wasn't a long, or was null.
      */
     public long getLong(String key, long fallback) {
         Long value = get(key, Long.class);
@@ -438,8 +438,8 @@ public class Remember {
     }
 
     /**
-     * Gets a String with the given key. Defers to the fallback value if the mapping didn't exist, wasn't a String,
-     * or was null.
+     * Gets a String with the given key. Defers to the fallback value if the mapping didn't exist,
+     * wasn't a String, or was null.
      */
     public String getString(String key, String fallback) {
         String value = get(key, String.class);
@@ -447,8 +447,8 @@ public class Remember {
     }
 
     /**
-     * Gets a boolean with the given key. Defers to the fallback value if the mapping didn't exist, wasn't a boolean,
-     * or was null.
+     * Gets a boolean with the given key. Defers to the fallback value if the mapping didn't exist,
+     * wasn't a boolean, or was null.
      */
     public boolean getBoolean(String key, boolean fallback) {
         Boolean value = get(key, Boolean.class);
@@ -497,8 +497,8 @@ public class Remember {
     }
 
     /**
-     * Gets the value mapped by the given key, casted to the given class. If the value doesn't exist or isn't of the
-     * right class, return null instead.
+     * Gets the value mapped by the given key, casted to the given class. If the value doesn't
+     * exist or isn't of the right class, return null instead.
      */
     private <T> T get(String key, Class<T> clazz) {
         Object value = mData.get(key);
@@ -513,6 +513,12 @@ public class Remember {
      * Predicate for querying
      */
     public interface Predicate {
+        /**
+         * Determines if the given object is a match or not.
+         *
+         * @param obj the object to match on
+         * @return true if it's a match, false otherwise
+         */
         boolean match(Object obj);
     }
 
@@ -527,7 +533,6 @@ public class Remember {
          * @param success true if saved successfully, false otherwise.
          */
         void apply(Boolean success);
-
     }
 
 }
