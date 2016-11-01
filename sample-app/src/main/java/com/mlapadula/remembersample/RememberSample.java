@@ -14,13 +14,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Set;
+
 /**
  * A simple activity that counts how many times it's been resumed via {@link Remember}.
  */
 public class RememberSample extends AppCompatActivity {
 
+    private static final String TAG = RememberSample.class.getSimpleName();
+
     private static final String PREFS_NAME = "com.remember.example";
-    private static final String KEY = "test_key";
 
     private static Remember sRemember;
 
@@ -41,14 +44,14 @@ public class RememberSample extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        int howMany = getRemember(this).getInt(KEY, 1);
+        int howMany = getRemember(this).getInt("counter", 1);
 
         TextView textView = (TextView) findViewById(R.id.text_view);
         String testString = getApplicationContext().getResources().getQuantityString(R.plurals.youve_resumed, howMany,
                 howMany);
         textView.setText(testString);
 
-        getRemember(this).putInt(KEY, howMany + 1);
+        getRemember(this).putInt("counter", howMany + 1);
 
         // Some other simple examples:
         getRemember(this).putFloat("test-float", 123.0f);
@@ -56,10 +59,10 @@ public class RememberSample extends AppCompatActivity {
         getRemember(this).putBoolean("test-boolean", true);
         getRemember(this).putLong("test-long", 54321L);
 
-        Log.d("Remember", "put float: " + getRemember(this).getFloat("test-float", 0f));
-        Log.d("Remember", "put string: " + getRemember(this).getString("test-string", ""));
-        Log.d("Remember", "put boolean: " + getRemember(this).getBoolean("test-boolean", false));
-        Log.d("Remember", "put long: " + getRemember(this).getLong("test-long", 0L));
+        Log.d(TAG, "put float: " + getRemember(this).getFloat("test-float", 0f));
+        Log.d(TAG, "put string: " + getRemember(this).getString("test-string", ""));
+        Log.d(TAG, "put boolean: " + getRemember(this).getBoolean("test-boolean", false));
+        Log.d(TAG, "put long: " + getRemember(this).getLong("test-long", 0L));
 
         // JSON object example, with callback:
         JSONObject jsonObj = new JSONObject();
@@ -71,7 +74,7 @@ public class RememberSample extends AppCompatActivity {
         getRemember(this).putJsonObject("test-json-object", jsonObj, new Remember.Callback() {
             @Override
             public void apply(Boolean success) {
-                Log.d("Remember", "put json object: " + getRemember(RememberSample.this).getJsonObject("test-json-object", null));
+                Log.d(TAG, "put json object: " + getRemember(RememberSample.this).getJsonObject("test-json-object", null));
             }
         });
 
@@ -83,9 +86,19 @@ public class RememberSample extends AppCompatActivity {
         getRemember(this).putJsonArray("test-json-array", jsonArr, new Remember.Callback() {
             @Override
             public void apply(Boolean success) {
-                Log.d("Remember", "put json array: " + getRemember(RememberSample.this).getJsonArray("test-json-array", null));
+                Log.d(TAG, "put json array: " + getRemember(RememberSample.this).getJsonArray("test-json-array", null));
             }
         });
+
+        // Query example:
+        Set<String> matchingKeys = getRemember(this).query(new Remember.Predicate() {
+            @Override
+            public boolean match(Object obj) {
+                // Look for numeric values >0
+                return obj instanceof Number && ((Number) obj).floatValue() > 0;
+            }
+        });
+        Log.d(TAG, "keys with numeric values >0: " + matchingKeys);
     }
 
     @Override

@@ -80,7 +80,8 @@ public class Remember {
      *
      * @param context         the context to use. Using the application context is fine here.
      * @param sharedPrefsName the name of the shared prefs file to use
-     * @return the singleton instance that was initialized.
+     * @return the instance that was initialized, or a cached instance if we already have one
+     * that uses this shared preferences file
      */
     public static synchronized Remember create(Context context, String sharedPrefsName) {
         // Defensive checks
