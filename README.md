@@ -1,4 +1,4 @@
-# Remember
+# Remember2
 
 An in-memory data store backed by shared preferences, for Android.
 
@@ -13,6 +13,19 @@ This is a key-value store with some nice properties:
 4. Thread-safety. Reads and writes can happen from anywhere without the need for external synchronization.
 
 Note that since writes are asynchronous, an in-flight write may be lost if the app is killed before the data has been written to disk. If you require true 'commit' semantics then Remember is not for you.
+
+## About Remember2
+
+This is based on the [original Remember library](https://github.com/tumblr/remember), but has some improvements:
+
+* **Not** a singleton
+* Namespacing: multiple instances of Remember can be constructed with different shared preferences files
+* Built-in support for JSONObject and JSONArray
+* Adds some missing methods (`size()`, `keys()`, etc.)
+* Queries! Basic querying via predicates
+* Fails fast on null insert
+
+Remember2 is backwards-compatible with the original Remember. Just create an instance of Remember2 that references the same shared preferences file.
 
 ## Download
 
@@ -34,28 +47,26 @@ dependencies {
 
 ## Usage
 
-When your app starts up, initialize Remember. This only has to be done once, and should happen in your app's `onCreate()`:
+Obtain instances of Remember via `create()`:
 
 ```java
-@Override
-public void onCreate() {
-    super.onCreate();
-    Remember.init(getApplicationContext(), "com.mysampleapp.whatever");
-}
+Remember myRemember = Remember.create(context, "some-shared-preferences-name");
 ```
 
-(Note that this is the Application-level [`onCreate()`](http://developer.android.com/reference/android/app/Application.html#onCreate()), **NOT** the Activity `onCreate()`. Check out the [sample app](https://github.com/tumblr/Remember/blob/master/sample-app/src/main/java/com/tumblr/remembersample/SampleApp.java) for an example.)
+This will create a new instance of Remember if you haven't used it before, or will use a shared instance if there's already one in existence.
 
-Now you can freely use Remember from anywhere in your app:
+Use Remember like so:
 
 ```java
-Remember.putString("some key", "some value");
-String value = Remember.getString("some key", "");
+myRemember.putString("some key", "some value");
+String value = myRemember.getString("some key", "");
 ```
+
+More examples are available in the [sample app](https://github.com/mlapadula/remember2/blob/master/sample-app/src/main/java/com/mlapadula/remembersample/RememberSample.java)
 
 ## Javadoc
 
-Right [here](https://cdn.rawgit.com/tumblr/Remember/ab1870c008e5d96d51ce2655da3f20b59fd82fa5/doc/index.html)
+Right [here](https://cdn.rawgit.com/mlapadula/remember2/master/doc/index.html)
 
 ## Sample app
 Clone and build this repo in Android Studio to see an example of a sample app. The app simply increments a counter stored in Remember and tells you the value.
@@ -67,7 +78,7 @@ Michael Lapadula: mlapadula@gmail.com
 ## License
 
 ```
-Copyright 2015 Tumblr, Inc.
+Copyright 2016 Michael Lapadula
 
 Licensed under the Apache License, Version 2.0 (the “License”); you may not use this file except in compliance with the License. You may obtain a copy of the License at apache.org/licenses/LICENSE-2.0.
 
