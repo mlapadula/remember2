@@ -32,7 +32,7 @@ import java.util.concurrent.ConcurrentMap;
  * Note that since writes are asynchronous, an in-flight write may be lost if the app is killed before the data has
  * been written to disk. If you require true 'commit' semantics then Remember is not for you.
  * <br><br>
- * Created by mlapadula on 12/23/14.
+ * Created by Michael Lapadula (https://github.com/mlapadula)
  */
 public class Remember {
 
@@ -523,7 +523,7 @@ public class Remember {
     }
 
     /**
-     * The callback interface for async operations.
+     * Callback for async operations.
      */
     public interface Callback {
 
