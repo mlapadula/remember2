@@ -51,11 +51,6 @@ public class Remember {
     private final Object SHARED_PREFS_LOCK = new Object();
 
     /**
-     * The name of the shared preferences file to use.
-     */
-    private final String mSharedPrefsName;
-
-    /**
      * The {@link SharedPreferences} instance
      */
     private SharedPreferences mSharedPreferences;
@@ -70,7 +65,6 @@ public class Remember {
      */
     private Remember(Context context, String sharedPrefsName) {
         long start = SystemClock.uptimeMillis();
-        mSharedPrefsName = sharedPrefsName;
 
         // Read from shared prefs
         mSharedPreferences = context.getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE);
