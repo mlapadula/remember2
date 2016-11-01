@@ -160,6 +160,9 @@ public class Remember {
      * @return this instance
      */
     private <T> Remember saveAsync(final String key, final T value, final Callback callback) {
+        if (key == null || value == null) {
+            throw new IllegalArgumentException("Trying to put a null key or value");
+        }
         // Put it in memory
         mData.put(key, value);
 
@@ -397,7 +400,7 @@ public class Remember {
      *                 and will be passed 'true' if successful, 'false' if not.
      */
     public Remember putJsonObject(String key, JSONObject value, final Callback callback) {
-        String jsonString = value == null ? "" : value.toString();
+        String jsonString = value == null ? null : value.toString();
         return putString(key, jsonString, callback);
     }
 
@@ -408,7 +411,7 @@ public class Remember {
      *                 and will be passed 'true' if successful, 'false' if not.
      */
     public Remember putJsonArray(String key, JSONArray value, final Callback callback) {
-        String jsonString = value == null ? "" : value.toString();
+        String jsonString = value == null ? null : value.toString();
         return putString(key, jsonString, callback);
     }
 
