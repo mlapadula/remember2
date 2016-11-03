@@ -16,14 +16,15 @@ Note that since writes are asynchronous, an in-flight write may be lost if the a
 
 ## About Remember2
 
-This is based on the [original Remember library](https://github.com/tumblr/remember), but has some improvements:
+This is an update of the [original Remember library](https://github.com/tumblr/remember) with some extra features:
 
-* **Not** a singleton
-* Namespacing: multiple instances of Remember can be constructed with different shared preferences files
-* Built-in support for JSONObject and JSONArray
-* Adds some missing methods (`size()`, `keys()`, etc.)
-* Queries! Basic querying via predicates
+* Namespacing by file, so you can effectively have different "tables"
+* Allowing you to store/retrieve JSON easily
+* Allowing you to query the data store. (In the easiest, simplest way possible: iterate over the values and look for things that match a given function)
+* Adds some missing methods
 * Fails fast on null insert
+
+Everything is still in-memory so it's fast and easy, but not appropriate for storing really large amounts of data.
 
 Remember2 is backwards-compatible with the original Remember. Just create an instance of Remember2 that references the same shared preferences file.
 
@@ -41,7 +42,7 @@ And add Remember to your dependencies:
 
 ```groovy
 dependencies {
-    compile (group: 'com.tumblr', name: 'remember', version: '1.0.0', ext: 'aar')
+    compile (group: 'com.mlapadula', name: 'remember2', version: '2.0.0', ext: 'aar')
 }
 ```
 
@@ -62,7 +63,7 @@ myRemember.putString("some key", "some value");
 String value = myRemember.getString("some key", "");
 ```
 
-More examples are available in the [sample app](https://github.com/mlapadula/remember2/blob/master/sample-app/src/main/java/com/mlapadula/remembersample/RememberSample.java)
+More examples are available in the [sample app](https://github.com/mlapadula/remember2/blob/master/sample-app/src/main/java/com/mlapadula/remembersample/RememberSample.java#L56)
 
 ## Javadoc
 
