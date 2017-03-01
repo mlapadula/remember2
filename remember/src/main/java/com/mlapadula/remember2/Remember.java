@@ -158,6 +158,16 @@ public class Remember {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Trying to put a null key or value");
         }
+
+        // Skip saveToDisk if value is the same
+        if (mData.get(key) != null && mData.get(key).equals(value)) {
+            // Fire the callback
+            if (callback != null) {
+                callback.apply(true);
+            }
+            return this;
+        }
+
         // Put it in memory
         mData.put(key, value);
 
