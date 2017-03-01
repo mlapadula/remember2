@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -69,7 +70,11 @@ public class Remember {
         // Read from shared prefs
         mSharedPreferences = context.getSharedPreferences(sharedPrefsName, Context.MODE_PRIVATE);
         mData = new ConcurrentHashMap<String, Object>();
-        mData.putAll(mSharedPreferences.getAll());
+
+        // Remove the item if it is null, for backward compatible
+        for (Map.Entry<String, ?> entry : mSharedPreferences.getAll().entrySet())
+            if (entry.getValue() != null)
+                mData.put(entry.getKey(), entry.getValue());
 
         long delta = SystemClock.uptimeMillis() - start;
         Log.i(TAG, "Remember took " + delta + " ms to init");
@@ -158,6 +163,16 @@ public class Remember {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Trying to put a null key or value");
         }
+
+        // Skip saveToDisk if value is the same
+        if (mData.get(key) != null && mData.get(key).equals(value)) {
+            // Fire the callback
+            if (callback != null) {
+                callback.apply(true);
+            }
+            return this;
+        }
+
         // Put it in memory
         mData.put(key, value);
 
